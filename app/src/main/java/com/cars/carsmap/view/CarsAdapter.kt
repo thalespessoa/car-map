@@ -8,7 +8,6 @@ import com.cars.carsmap.R
 import com.cars.carsmap.model.entity.Car
 import com.cars.carsmap.view.bind.BindableAdapter
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.fragment_car_detail.*
 import kotlinx.android.synthetic.main.item_car.view.*
 
 class CarsAdapter(private val onSelectCar: (Car) -> Unit) : RecyclerView.Adapter<CarsAdapter.Holder>(), BindableAdapter<Car> {
@@ -22,7 +21,10 @@ class CarsAdapter(private val onSelectCar: (Car) -> Unit) : RecyclerView.Adapter
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val inflater = LayoutInflater.from(parent.context)
-        return Holder(inflater.inflate(R.layout.item_car, parent, false), onSelectCar)
+        return Holder(
+            inflater.inflate(R.layout.item_car, parent, false),
+            onSelectCar
+        )
     }
 
     override fun getItemCount() = items.size
