@@ -1,9 +1,9 @@
-package com.cars.carsmap.view
+package com.cars.carsmap.view.adapter
 
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import com.cars.carsmap.R
 import com.cars.carsmap.model.entity.Car
 import com.cars.carsmap.view.bind.BindableAdapter
@@ -29,9 +29,7 @@ class CarsAdapter(private val onSelectCar: (Car) -> Unit) : RecyclerView.Adapter
 
     override fun getItemCount() = items.size
 
-    override fun onBindViewHolder(holder: Holder, position: Int) {
-        holder.bind(items[position])
-    }
+    override fun onBindViewHolder(holder: Holder, position: Int) = holder.bind(items[position])
 
     //----------------------------------------------------------------------------------------------
     // View Holder

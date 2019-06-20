@@ -74,15 +74,15 @@ class MapFragment : SupportMapFragment(), OnMapReadyCallback, GoogleMap.OnMarker
                 )
             }
         }
-        map?.isMyLocationEnabled = true
 
-        fusedLocationClient.lastLocation.addOnSuccessListener(activity!!) { location ->
-            // Got last known location. In some rare situations this can be null.
-            // 3
-            if (location != null) {
-//                lastLocation = location
-                val currentLatLng = LatLng(location.latitude, location.longitude)
-                map?.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 12f))
+        map?.let { map ->
+            map.isMyLocationEnabled = true
+
+            fusedLocationClient.lastLocation.addOnSuccessListener(activity!!) { location ->
+                location?.let {
+                    val currentLatLng = LatLng(location.latitude, location.longitude)
+                    map.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 12f))
+                }
             }
         }
     }

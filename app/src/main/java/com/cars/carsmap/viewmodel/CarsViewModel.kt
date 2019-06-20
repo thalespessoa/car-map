@@ -5,7 +5,10 @@ import androidx.lifecycle.ViewModel
 import com.cars.carsmap.ApplicationComponent
 import com.cars.carsmap.model.DataRepository
 import com.cars.carsmap.model.entity.Car
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class CarsViewModel : ViewModel(), ApplicationComponent.Injectable {
@@ -38,7 +41,6 @@ class CarsViewModel : ViewModel(), ApplicationComponent.Injectable {
     }
 
     fun select(car: Car) {
-        println("Select: $car")
         viewState.value
             ?.run { CarsViewState(status, list, car, message) }
             .also { viewState.value = it }
