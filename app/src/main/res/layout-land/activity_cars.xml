@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:id="@+id/view_land"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="horizontal"
+              tools:context=".view.CarsActivity">
+
+    <fragment
+            android:name="com.cars.carsmap.view.ListFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="6"/>
+
+    <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/colorBase"/>
+
+    <fragment
+            android:name="com.cars.carsmap.view.MapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="4"/>
+
+</LinearLayout>

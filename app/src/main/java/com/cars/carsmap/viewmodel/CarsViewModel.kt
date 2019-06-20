@@ -1,7 +1,7 @@
 package com.cars.carsmap.viewmodel
 
-import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.cars.carsmap.ApplicationComponent
 import com.cars.carsmap.model.DataRepository
 import com.cars.carsmap.model.entity.Car

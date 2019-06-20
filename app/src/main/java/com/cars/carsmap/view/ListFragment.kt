@@ -1,11 +1,11 @@
 package com.cars.carsmap.view
 
-import android.arch.lifecycle.ViewModelProviders
-import android.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProviders
+import androidx.databinding.DataBindingUtil
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v4.widget.SwipeRefreshLayout
-import android.support.v7.widget.RecyclerView
+import androidx.fragment.app.Fragment
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,7 +20,7 @@ class ListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
     private val swipeRefreshLayout: SwipeRefreshLayout by lazy { swipe_refresh_layout }
     private val recyclerView: RecyclerView by lazy { recycler_view }
-    private val reposAdapter = CarsAdapter { onSelect(it) }
+    private val carsAdapter = CarsAdapter { onSelect(it) }
 
     private val carsViewModel by lazy { activity?.let {
         ViewModelProviders.of(it, ViewModelFactory()).get(CarsViewModel::class.java) }
@@ -39,7 +39,7 @@ class ListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        recyclerView.adapter = reposAdapter
+        recyclerView.adapter = carsAdapter
         swipeRefreshLayout.setOnRefreshListener(this)
     }
 
