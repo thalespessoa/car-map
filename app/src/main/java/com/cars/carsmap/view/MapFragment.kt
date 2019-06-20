@@ -1,6 +1,7 @@
 package com.cars.carsmap.view
 
 import android.os.Bundle
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.cars.carsmap.ViewModelFactory
 import com.cars.carsmap.viewmodel.CarsViewModel
@@ -23,9 +24,12 @@ class MapFragment: SupportMapFragment(), OnMapReadyCallback {
     }
 
     override fun onMapReady(googleMap: GoogleMap?) {
-        // Add a marker in Sydney and move the camera
-        val sydney = LatLng(-34.0, 151.0)
-        googleMap?.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-        googleMap?.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+        carsViewModel?.viewState?.observe(this, Observer { viewState ->
+            googleMap?.clear()
+            viewState.list.forEach {
+                val position = LatLng(it.latitude, it.longitude)
+                googleMap?.addMarker(MarkerOptions().position(position).title(it.name))
+            }
+        })
     }
 }

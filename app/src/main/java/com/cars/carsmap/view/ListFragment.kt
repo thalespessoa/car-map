@@ -18,7 +18,6 @@ import kotlinx.android.synthetic.main.fragment_list.*
 
 class ListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
-    private val swipeRefreshLayout: SwipeRefreshLayout by lazy { swipe_refresh_layout }
     private val recyclerView: RecyclerView by lazy { recycler_view }
     private val carsAdapter = CarsAdapter { onSelect(it) }
 
@@ -40,7 +39,6 @@ class ListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         recyclerView.adapter = carsAdapter
-        swipeRefreshLayout.setOnRefreshListener(this)
     }
 
     //----------------------------------------------------------------------------------------------

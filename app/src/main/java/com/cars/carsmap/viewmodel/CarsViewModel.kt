@@ -5,8 +5,7 @@ import androidx.lifecycle.ViewModel
 import com.cars.carsmap.ApplicationComponent
 import com.cars.carsmap.model.DataRepository
 import com.cars.carsmap.model.entity.Car
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import javax.inject.Inject
 
 class CarsViewModel : ViewModel(), ApplicationComponent.Injectable {
@@ -14,12 +13,20 @@ class CarsViewModel : ViewModel(), ApplicationComponent.Injectable {
     @Inject
     lateinit var dataRepository: DataRepository
 
+    private val supervisorJob = SupervisorJob()
+    private val defaultScope = CoroutineScope(Dispatchers.Default + supervisorJob)
+
     val viewState: MutableLiveData<CarsViewState> by lazy {
         MutableLiveData<CarsViewState>()
             .apply { value = CarsViewState(ViewStateStatus.SUCCESS) }
     }
 
-    fun refresh() = GlobalScope.launch {
+    override fun onCleared() {
+        super.onCleared()
+        supervisorJob.cancel()
+    }
+
+    fun refresh() = defaultScope.launch {
         viewState.postValue(CarsViewState(ViewStateStatus.RUNNING))
         kotlin.runCatching {
             dataRepository.fetchCars()

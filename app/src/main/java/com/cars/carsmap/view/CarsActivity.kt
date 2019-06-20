@@ -10,6 +10,10 @@ import com.cars.carsmap.ViewModelFactory
 import com.cars.carsmap.viewmodel.CarsViewModel
 import com.cars.carsmap.viewmodel.CarsViewState
 import com.google.android.material.tabs.TabLayout
+import com.google.android.material.appbar.AppBarLayout
+import androidx.coordinatorlayout.widget.CoordinatorLayout
+
+
 
 class CarsActivity : AppCompatActivity(), Observer<CarsViewState> {
 
@@ -26,6 +30,17 @@ class CarsActivity : AppCompatActivity(), Observer<CarsViewState> {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cars)
+
+        findViewById<AppBarLayout>(R.id.appbar)?.let { appBar ->
+            val params = appBar.layoutParams as CoordinatorLayout.LayoutParams
+            if (params.behavior == null) params.behavior = AppBarLayout.Behavior()
+            val behaviour = params.behavior as AppBarLayout.Behavior
+            behaviour.setDragCallback(object : AppBarLayout.Behavior.DragCallback() {
+                override fun canDrag(appBarLayout: AppBarLayout): Boolean {
+                    return false
+                }
+            })
+        }
     }
 
     override fun onStart() {
