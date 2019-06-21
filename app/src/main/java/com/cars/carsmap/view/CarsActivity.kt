@@ -1,6 +1,7 @@
 package com.cars.carsmap.view
 
 import android.os.Bundle
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -10,6 +11,8 @@ import com.cars.carsmap.ViewModelFactory
 import com.cars.carsmap.view.adapter.ViewPagerAdapter
 import com.cars.carsmap.viewmodel.CarsViewModel
 import com.cars.carsmap.viewmodel.CarsViewState
+import com.cars.carsmap.viewmodel.ViewStateStatus
+import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayout
 
 class CarsActivity : AppCompatActivity(), Observer<CarsViewState> {
@@ -26,6 +29,7 @@ class CarsActivity : AppCompatActivity(), Observer<CarsViewState> {
 
     private val tabLayout: TabLayout? by lazy { findViewById<TabLayout>(R.id.tab_layout) }
     private val viewPager: ViewPager? by lazy { findViewById<ViewPager>(R.id.view_pager) }
+    private val appBarLayout: AppBarLayout? by lazy { findViewById<AppBarLayout>(R.id.app_bar_layout) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,9 +45,19 @@ class CarsActivity : AppCompatActivity(), Observer<CarsViewState> {
     }
 
     override fun onChanged(viewState: CarsViewState?) {
-        viewState?.carSelected?.let {
+        viewState?.carSelectedMap?.also {
+            if (viewPager?.currentItem == 0) {
+                viewPager?.currentItem = 1
+                appBarLayout?.setExpanded(true, true)
+            }
+        }
+        viewState?.carSelected?.also {
             if (supportFragmentManager.findFragmentByTag(TAG_DETAIL) == null)
                 DetailDialogFragment().show(supportFragmentManager, TAG_DETAIL)
+        }
+
+        if(viewState?.status == ViewStateStatus.ERROR) {
+            AlertDialog.Builder(this).setMessage(viewState.message).show()
         }
     }
 }

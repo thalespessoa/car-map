@@ -10,22 +10,22 @@ import com.cars.carsmap.view.bind.BindableAdapter
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_car.view.*
 
-class CarsAdapter(private val onSelectCar: (Car) -> Unit) : RecyclerView.Adapter<CarsAdapter.Holder>(), BindableAdapter<Car> {
+class CarsListAdapter : RecyclerView.Adapter<CarsListAdapter.Holder>(), BindableAdapter<Car> {
 
     private var items = emptyList<Car>()
+
+    var onCarSelected: ((Car) -> Unit)? = null
+    var onCarPlaceSelected: ((Car) -> Unit)? = null
 
     override fun setData(items: List<Car>) {
         this.items = items
         notifyDataSetChanged()
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
-        val inflater = LayoutInflater.from(parent.context)
-        return Holder(
-            inflater.inflate(R.layout.item_car, parent, false),
-            onSelectCar
-        )
-    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder =
+        LayoutInflater.from(parent.context).let {
+            Holder(it.inflate(R.layout.item_car, parent, false))
+        }
 
     override fun getItemCount() = items.size
 
@@ -35,11 +35,13 @@ class CarsAdapter(private val onSelectCar: (Car) -> Unit) : RecyclerView.Adapter
     // View Holder
     //----------------------------------------------------------------------------------------------
 
-    class Holder(itemView: View, private val onSelect: (Car) -> Unit) : RecyclerView.ViewHolder(itemView) {
+    inner class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(car: Car) {
             itemView.title.text = car.name
+            itemView.modelName.text = car.modelName
             Picasso.with(itemView.context).load(car.carImageUrl).into(itemView.image)
-            itemView.setOnClickListener { onSelect(car) }
+            itemView.setOnClickListener { onCarSelected?.invoke(car) }
+            itemView.placeButton.setOnClickListener { onCarPlaceSelected?.invoke(car) }
         }
     }
 }

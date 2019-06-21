@@ -1,7 +1,6 @@
 package com.cars.carsmap.model
 
 import com.cars.carsmap.model.entity.Car
-import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import kotlinx.coroutines.Deferred
 import okhttp3.OkHttpClient
@@ -23,7 +22,7 @@ class NetworkApi {
         private const val LIST_URL = "/codingtask/cars"
     }
 
-    private val clientBuilder = OkHttpClient.Builder().addNetworkInterceptor(StethoInterceptor()).build()
+    private val clientBuilder = OkHttpClient.Builder().build()
 
     private val retrofit = Retrofit.Builder()
         .baseUrl(BASE_URL)

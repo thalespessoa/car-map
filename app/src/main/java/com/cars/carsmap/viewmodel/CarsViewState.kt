@@ -6,4 +6,5 @@ data class CarsViewState(
     val status: ViewStateStatus,
     val list: List<Car> = emptyList(),
     val carSelected: Car? = null,
+    val carSelectedMap:Car? = null,
     val message:String? = null)

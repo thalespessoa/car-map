@@ -5,10 +5,7 @@ import androidx.lifecycle.ViewModel
 import com.cars.carsmap.ApplicationComponent
 import com.cars.carsmap.model.DataRepository
 import com.cars.carsmap.model.entity.Car
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import javax.inject.Inject
 
 class CarsViewModel : ViewModel(), ApplicationComponent.Injectable {
@@ -17,20 +14,23 @@ class CarsViewModel : ViewModel(), ApplicationComponent.Injectable {
     lateinit var dataRepository: DataRepository
 
     private val supervisorJob = SupervisorJob()
-    private val defaultScope = CoroutineScope(Dispatchers.Default + supervisorJob)
+    private val scope = CoroutineScope(Dispatchers.Default + supervisorJob)
 
     val viewState: MutableLiveData<CarsViewState> by lazy {
-        MutableLiveData<CarsViewState>()
-            .apply { value = CarsViewState(ViewStateStatus.SUCCESS) }
+        MutableLiveData<CarsViewState>().apply { value = CarsViewState(ViewStateStatus.SUCCESS) }
+    }
+
+    override fun inject(applicationComponent: ApplicationComponent) {
+        applicationComponent.inject(this)
     }
 
     override fun onCleared() {
         super.onCleared()
-        supervisorJob.cancel()
+        scope.coroutineContext.cancelChildren()
     }
 
-    fun refresh() = defaultScope.launch {
-        viewState.postValue(CarsViewState(ViewStateStatus.RUNNING))
+    fun refresh() = scope.launch {
+        viewState.postValue(CarsViewState(ViewStateStatus.PROGRESS))
         kotlin.runCatching {
             dataRepository.fetchCars()
         }.onSuccess {
@@ -42,7 +42,13 @@ class CarsViewModel : ViewModel(), ApplicationComponent.Injectable {
 
     fun select(car: Car) {
         viewState.value
-            ?.run { CarsViewState(status, list, car, message) }
+            ?.run { CarsViewState(status, list, car, carSelectedMap, message) }
+            .also { viewState.value = it }
+    }
+
+    fun selectOnMap(car: Car) {
+        viewState.value
+            ?.run { CarsViewState(status, list, carSelected, car, message) }
             .also { viewState.value = it }
     }
 
@@ -50,9 +56,5 @@ class CarsViewModel : ViewModel(), ApplicationComponent.Injectable {
         viewState.value
             ?.run { CarsViewState(status, list, message = message) }
             .also { viewState.value = it }
-    }
-
-    override fun inject(applicationComponent: ApplicationComponent) {
-        applicationComponent.inject(this)
     }
 }

@@ -1,9 +1,10 @@
 package com.cars.carsmap.model
 
-/**
- * Created by thalespessoa on 19/5/18.
- */
-class DataRepository(private val networkApi: NetworkApi) {
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
-    suspend fun fetchCars() = networkApi.fetchCars().await()
+
+class DataRepository(private val api: NetworkApi) {
+
+    suspend fun fetchCars() = withContext(Dispatchers.IO) { api.fetchCars().await() }
 }

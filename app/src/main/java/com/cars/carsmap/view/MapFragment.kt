@@ -1,13 +1,16 @@
 package com.cars.carsmap.view
 
-import android.content.pm.PackageManager
+import android.Manifest.permission.ACCESS_FINE_LOCATION
+import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.os.Bundle
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.cars.carsmap.ViewModelFactory
 import com.cars.carsmap.model.entity.Car
+import com.cars.carsmap.view.adapter.MapInfoWindowAdapter
 import com.cars.carsmap.viewmodel.CarsViewModel
+import com.cars.carsmap.viewmodel.CarsViewState
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -18,25 +21,26 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 
-class MapFragment : SupportMapFragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
+class MapFragment : SupportMapFragment(),
+    OnMapReadyCallback,
+    GoogleMap.OnInfoWindowClickListener,
+    Observer<CarsViewState> {
 
     companion object {
         private const val LOCATION_PERMISSION_REQUEST_CODE = 1
     }
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
-
     private var map: GoogleMap? = null
 
     private val carsViewModel by lazy {
-        activity?.let {
-            ViewModelProviders.of(it, ViewModelFactory()).get(CarsViewModel::class.java)
-        }
+        activity?.let { ViewModelProviders.of(it, ViewModelFactory()).get(CarsViewModel::class.java) }
     }
 
     override fun onCreate(bundle: Bundle?) {
         super.onCreate(bundle)
         getMapAsync(this)
+
     }
 
     override fun onActivityCreated(bundle: Bundle?) {
@@ -46,52 +50,50 @@ class MapFragment : SupportMapFragment(), OnMapReadyCallback, GoogleMap.OnMarker
 
     override fun onMapReady(googleMap: GoogleMap?) {
         map = googleMap
-        setUpMap()
-        googleMap?.setOnMarkerClickListener(this)
-        googleMap?.uiSettings?.isZoomControlsEnabled = true
-        carsViewModel?.viewState?.observe(this, Observer { viewState ->
-            googleMap?.clear()
-            viewState.list.forEach { car ->
-                MarkerOptions()
-                    .position(LatLng(car.latitude, car.longitude))
-                    .title(car.name)
-                    .let { googleMap?.addMarker(it) }
-                    .let { it?.tag = car }
-            }
-        })
+        googleMap?.let { setUpMap(it) }
+        carsViewModel?.viewState?.observe(this, this)
     }
 
-    private fun setUpMap() {
-        activity?.let { activity ->
-            if (ActivityCompat.checkSelfPermission(
-                    activity,
-                    android.Manifest.permission.ACCESS_FINE_LOCATION
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                ActivityCompat.requestPermissions(
-                    activity,
-                    arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_PERMISSION_REQUEST_CODE
-                )
-            }
+    override fun onChanged(viewState: CarsViewState?) {
+        map?.clear()
+        viewState?.list?.forEach { car ->
+            var latLng = LatLng(car.latitude, car.longitude)
+            MarkerOptions()
+                .position(latLng)
+                .title(car.modelName)
+                .let { map?.addMarker(it) }
+                .also {
+                    it?.tag = car
+                    if (car == viewState.carSelectedMap) {
+                        it?.showInfoWindow()
+                        map?.animateCamera(CameraUpdateFactory.newLatLng(it?.position))
+                    }
+                }
         }
+    }
 
-        map?.let { map ->
-            map.isMyLocationEnabled = true
+    private fun setUpMap(googleMap: GoogleMap) {
+        googleMap.setOnInfoWindowClickListener(this)
+        googleMap.setInfoWindowAdapter(MapInfoWindowAdapter(layoutInflater))
 
-            fusedLocationClient.lastLocation.addOnSuccessListener(activity!!) { location ->
+        activity?.let {
+            if (ActivityCompat.checkSelfPermission(it, ACCESS_FINE_LOCATION) != PERMISSION_GRANTED)
+                ActivityCompat.requestPermissions(it, arrayOf(ACCESS_FINE_LOCATION), LOCATION_PERMISSION_REQUEST_CODE)
+
+            googleMap.isMyLocationEnabled = true
+            fusedLocationClient.lastLocation.addOnSuccessListener(it) { location ->
                 location?.let {
                     val currentLatLng = LatLng(location.latitude, location.longitude)
-                    map.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 12f))
+                    googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 12f))
                 }
             }
         }
+
     }
 
-    override fun onMarkerClick(marker: Marker?): Boolean {
-        marker?.tag?.let { tag ->
-            if(tag is Car) carsViewModel?.select(tag)
+    override fun onInfoWindowClick(marker: Marker?) {
+        marker?.tag?.let {
+            if (it is Car) carsViewModel?.select(it)
         }
-
-        return true
     }
 }
