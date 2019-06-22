@@ -16,6 +16,8 @@ import com.cars.carsmap.view.adapter.CarsListAdapter
 import com.cars.carsmap.viewmodel.CarsViewModel
 import kotlinx.android.synthetic.main.fragment_list.*
 
+
+
 class ListFragment : Fragment(),
     SwipeRefreshLayout.OnRefreshListener {
 

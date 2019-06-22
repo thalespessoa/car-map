@@ -17,6 +17,10 @@
                 android:id="@+id/recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:clipToPadding="false"
+                android:background="@color/colorBaseDark"
                 app:data="@{viewModel.viewState.list}"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

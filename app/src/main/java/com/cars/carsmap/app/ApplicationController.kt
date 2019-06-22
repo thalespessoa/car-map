@@ -14,6 +14,6 @@ class ApplicationController : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        graph = DaggerApplicationComponent.builder().appModule(AppModule()).build()
+        graph = DaggerApplicationComponent.builder().appModule(AppModule(this)).build()
     }
 }

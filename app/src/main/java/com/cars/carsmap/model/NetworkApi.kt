@@ -4,6 +4,7 @@ import com.cars.carsmap.model.entity.Car
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import kotlinx.coroutines.Deferred
 import okhttp3.OkHttpClient
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
@@ -12,7 +13,7 @@ import retrofit2.http.GET
  * Class responsible for the communication with server
  * All remote data access comes from here.
  *
- * Created by thalespessoa on 19/5/18.
+ * Created by thalespessoa on 19/5/19.
  */
 
 class NetworkApi {
@@ -20,18 +21,21 @@ class NetworkApi {
     companion object {
         private const val BASE_URL = "https://cdn.sixt.io/"
         private const val LIST_URL = "/codingtask/cars"
+
+//        private const val BASE_URL = "http://api.openweathermap.org"
+//        private const val LIST_URL = "/data/2.5/"
     }
+
 
     private val clientBuilder = OkHttpClient.Builder().build()
 
-    private val retrofit = Retrofit.Builder()
+    val api: Api = Retrofit.Builder()
         .baseUrl(BASE_URL)
         .client(clientBuilder)
         .addCallAdapterFactory(CoroutineCallAdapterFactory())
         .addConverterFactory(MoshiConverterFactory.create())
         .build()
-
-    private val api = retrofit.create(Api::class.java)
+        .create(Api::class.java)
 
     //----------------------------------------------------------------------------------------------
     // API
@@ -39,12 +43,6 @@ class NetworkApi {
 
     interface Api {
         @GET(LIST_URL)
-        fun fetchCars(): Deferred<List<Car>>
+        fun fetchCars(): Deferred<Response<List<Car>>>
     }
-
-    //----------------------------------------------------------------------------------------------
-    // Public
-    //----------------------------------------------------------------------------------------------
-
-    fun fetchCars(): Deferred<List<Car>> = api.fetchCars()
 }

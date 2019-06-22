@@ -88,7 +88,6 @@ class MapFragment : SupportMapFragment(),
                 }
             }
         }
-
     }
 
     override fun onInfoWindowClick(marker: Marker?) {

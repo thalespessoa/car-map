@@ -9,25 +9,40 @@
     </style>
 
     <style name="TextHeader" parent="@android:style/TextAppearance">
-        <item name="android:textColor">@color/colorPrimaryDark</item>
-        <item name="android:textSize"> 20sp</item>
+        <item name="android:textColor">@color/colorBaseDark</item>
+        <item name="android:background">@color/colorPrimary</item>
+        <item name="android:textSize"> 15sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:maxLines">2</item>
+        <item name="android:paddingLeft">5dp</item>
+        <item name="android:paddingRight">5dp</item>
+        <item name="android:paddingTop">2dp</item>
+        <item name="android:paddingBottom">2dp</item>
         <item name="android:ellipsize">end</item>
     </style>
 
     <style name="ListText" parent="@android:style/TextAppearance">
-        <item name="android:textColor">@color/colorBaseDark</item>
+        <item name="android:textColor">@color/colorBaseMid</item>
         <item name="android:textSize">10sp</item>
         <item name="android:maxLines">1</item>
         <item name="android:ellipsize">end</item>
     </style>
 
     <style name="ListTitle" parent="@android:style/TextAppearance">
-        <item name="android:textColor">@color/colorBaseDark</item>
-        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/colorBaseMid</item>
+        <item name="android:textSize">15sp</item>
         <item name="android:maxLines">1</item>
         <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="Base.Widget.Design.TabLayout" parent="android:Widget">
+        <item name="tabIndicatorColor">@color/colorBaseLight</item>
+        <item name="tabIndicatorHeight">2dp</item>
+        <item name="tabPaddingStart">12dp</item>
+        <item name="tabPaddingEnd">12dp</item>
+        <item name="tabBackground">?attr/selectableItemBackground</item>
+        <item name="tabTextAppearance">@style/TextAppearance.Design.Tab</item>
+        <item name="tabSelectedTextColor">?android:textColorPrimary</item>
     </style>
 
 </resources>

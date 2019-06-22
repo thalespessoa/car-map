@@ -6,8 +6,8 @@
 
     <color name="colorBaseLight">#FFFFFF</color>
     <color name="colorBase">#D9D9D9</color>
-    <color name="colorBaseMid">#919191</color>
-    <color name="colorBaseDark">#4d4c4c</color>
+    <color name="colorBaseMid">#abaaaa</color>
+    <color name="colorBaseDark">#232323</color>
 
     <color name="colorWarning">#ed3030</color>
     <color name="colorWarningDark">#9c0b0b</color>

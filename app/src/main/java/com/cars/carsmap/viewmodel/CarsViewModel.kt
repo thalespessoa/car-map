@@ -3,6 +3,7 @@ package com.cars.carsmap.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.cars.carsmap.ApplicationComponent
+import com.cars.carsmap.model.ApiResult
 import com.cars.carsmap.model.DataRepository
 import com.cars.carsmap.model.entity.Car
 import kotlinx.coroutines.*
@@ -31,12 +32,12 @@ class CarsViewModel : ViewModel(), ApplicationComponent.Injectable {
 
     fun refresh() = scope.launch {
         viewState.postValue(CarsViewState(ViewStateStatus.PROGRESS))
-        kotlin.runCatching {
-            dataRepository.fetchCars()
-        }.onSuccess {
-            viewState.postValue(CarsViewState(ViewStateStatus.SUCCESS, it))
-        }.onFailure {
-            viewState.postValue(CarsViewState(ViewStateStatus.ERROR, message = it.message))
+
+        dataRepository.fetchCars().let {
+            when(it){
+                is ApiResult.Success -> viewState.postValue(CarsViewState(ViewStateStatus.SUCCESS, it.body))
+                is ApiResult.Error -> viewState.postValue(CarsViewState(ViewStateStatus.ERROR, message = it.exception.message))
+            }
         }
     }
 

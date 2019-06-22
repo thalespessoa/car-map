@@ -37,11 +37,20 @@ class CarsListAdapter : RecyclerView.Adapter<CarsListAdapter.Holder>(), Bindable
 
     inner class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(car: Car) {
-            itemView.title.text = car.name
             itemView.modelName.text = car.modelName
-            Picasso.with(itemView.context).load(car.carImageUrl).into(itemView.image)
+            itemView.color.text = car.color?.replace("_", " ")?.capitalize()
+
+
+            Picasso.with(itemView.context)
+                .load(car.carImageUrl)
+                .error(R.drawable.baseline_directions_car_24px)
+                .fit()
+                .centerInside()
+                .into(itemView.image)
+
             itemView.setOnClickListener { onCarSelected?.invoke(car) }
             itemView.placeButton.setOnClickListener { onCarPlaceSelected?.invoke(car) }
+            itemView.image.setOnClickListener { onCarPlaceSelected?.invoke(car) }
         }
     }
 }

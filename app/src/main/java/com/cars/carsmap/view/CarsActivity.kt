@@ -57,7 +57,12 @@ class CarsActivity : AppCompatActivity(), Observer<CarsViewState> {
         }
 
         if(viewState?.status == ViewStateStatus.ERROR) {
-            AlertDialog.Builder(this).setMessage(viewState.message).show()
+            AlertDialog.Builder(this)
+                .setIcon(R.drawable.baseline_error_outline_24px)
+                .setTitle(R.string.error_title)
+                .setMessage(viewState.message)
+                .setPositiveButton(R.string.ok, null)
+                .show()
         }
     }
 }
