@@ -2,6 +2,7 @@ package com.cars.carsmap.view
 
 import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.content.pm.PackageManager.PERMISSION_GRANTED
+import android.location.Location
 import android.os.Bundle
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.Observer
@@ -32,6 +33,7 @@ class MapFragment : SupportMapFragment(),
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private var map: GoogleMap? = null
+    private var lastLocation: Location? = null
 
     private val carsViewModel by lazy {
         activity?.let { ViewModelProviders.of(it, ViewModelFactory()).get(CarsViewModel::class.java) }
@@ -40,7 +42,6 @@ class MapFragment : SupportMapFragment(),
     override fun onCreate(bundle: Bundle?) {
         super.onCreate(bundle)
         getMapAsync(this)
-
     }
 
     override fun onActivityCreated(bundle: Bundle?) {
@@ -56,17 +57,20 @@ class MapFragment : SupportMapFragment(),
 
     override fun onChanged(viewState: CarsViewState?) {
         map?.clear()
+
+        if(lastLocation == null)
+            map?.animateCamera(CameraUpdateFactory.newLatLngZoom(viewState?.list?.firstOrNull()?.latLng, 8f))
+
         viewState?.list?.forEach { car ->
-            var latLng = LatLng(car.latitude, car.longitude)
             MarkerOptions()
-                .position(latLng)
+                .position(car.latLng)
                 .title(car.modelName)
                 .let { map?.addMarker(it) }
                 .also {
                     it?.tag = car
                     if (car == viewState.carSelectedMap) {
                         it?.showInfoWindow()
-                        map?.animateCamera(CameraUpdateFactory.newLatLng(it?.position))
+                        map?.animateCamera(CameraUpdateFactory.newLatLngZoom(it?.position, 12f))
                     }
                 }
         }
@@ -79,20 +83,35 @@ class MapFragment : SupportMapFragment(),
         activity?.let {
             if (ActivityCompat.checkSelfPermission(it, ACCESS_FINE_LOCATION) != PERMISSION_GRANTED)
                 ActivityCompat.requestPermissions(it, arrayOf(ACCESS_FINE_LOCATION), LOCATION_PERMISSION_REQUEST_CODE)
-
-            googleMap.isMyLocationEnabled = true
-            fusedLocationClient.lastLocation.addOnSuccessListener(it) { location ->
-                location?.let {
-                    val currentLatLng = LatLng(location.latitude, location.longitude)
-                    googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 12f))
-                }
-            }
+            else
+                requestLocalization()
         }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if(requestCode == LOCATION_PERMISSION_REQUEST_CODE)
+            requestLocalization()
     }
 
     override fun onInfoWindowClick(marker: Marker?) {
         marker?.tag?.let {
             if (it is Car) carsViewModel?.select(it)
+        }
+    }
+
+    private fun requestLocalization() {
+        activity?.let {
+            if (ActivityCompat.checkSelfPermission(it, ACCESS_FINE_LOCATION) == PERMISSION_GRANTED) {
+                map?.isMyLocationEnabled = true
+                fusedLocationClient.lastLocation.addOnSuccessListener(it) { location ->
+                    this.lastLocation = location
+                    location?.let { location ->
+                        val currentLatLng = LatLng(location.latitude, location.longitude)
+                        map?.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 12f))
+                    }
+                }
+            }
         }
     }
 }

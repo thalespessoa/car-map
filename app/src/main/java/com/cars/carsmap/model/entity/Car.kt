@@ -1,5 +1,7 @@
 package com.cars.carsmap.model.entity
 
+import com.google.android.gms.maps.model.LatLng
+
 data class Car(
     val id:String,
     val latitude:Double = 0.0,
@@ -21,4 +23,7 @@ data class Car(
 
     val readableColor:String
     get() = color?.replace("_", " ")?.capitalize() ?: ""
+
+    val latLng:LatLng
+    get() = LatLng(latitude, longitude)
 }
