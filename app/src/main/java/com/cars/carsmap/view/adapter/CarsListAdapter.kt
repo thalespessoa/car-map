@@ -18,8 +18,10 @@ class CarsListAdapter : RecyclerView.Adapter<CarsListAdapter.Holder>(), Bindable
     var onCarPlaceSelected: ((Car) -> Unit)? = null
 
     override fun setData(items: List<Car>) {
-        this.items = items
-        notifyDataSetChanged()
+        if(this.items != items) {
+            this.items = items
+            notifyDataSetChanged()
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder =

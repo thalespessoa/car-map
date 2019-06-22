@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.viewpager.widget.ViewPager
 import com.cars.carsmap.R
 import com.cars.carsmap.ViewModelFactory
+import com.cars.carsmap.model.entity.Car
 import com.cars.carsmap.view.adapter.ViewPagerAdapter
 import com.cars.carsmap.viewmodel.CarsViewModel
 import com.cars.carsmap.viewmodel.CarsViewState
@@ -30,6 +31,10 @@ class CarsActivity : AppCompatActivity(), Observer<CarsViewState> {
     private val tabLayout: TabLayout? by lazy { findViewById<TabLayout>(R.id.tab_layout) }
     private val viewPager: ViewPager? by lazy { findViewById<ViewPager>(R.id.view_pager) }
     private val appBarLayout: AppBarLayout? by lazy { findViewById<AppBarLayout>(R.id.app_bar_layout) }
+    private val detailFragment: DetailDialogFragment?
+        get() {
+            return (supportFragmentManager.findFragmentByTag(TAG_DETAIL) as DetailDialogFragment)
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,17 +56,10 @@ class CarsActivity : AppCompatActivity(), Observer<CarsViewState> {
                 appBarLayout?.setExpanded(true, true)
             }
         }
-        viewState?.carSelected?.also {
-            if (supportFragmentManager.findFragmentByTag(TAG_DETAIL) == null)
-                DetailDialogFragment().apply {
-                    onClickLocation = { viewModel.selectOnMap(it) }
-                }.show(supportFragmentManager, TAG_DETAIL)
-            else
-                (supportFragmentManager.findFragmentByTag(TAG_DETAIL) as DetailDialogFragment)
-                    .onClickLocation = { viewModel.selectOnMap(it) }
-        }
 
-        if(viewState?.status == ViewStateStatus.ERROR) {
+        handleDetailFragment(viewState?.carSelected)
+
+        if (viewState?.status == ViewStateStatus.ERROR) {
             AlertDialog.Builder(this)
                 .setIcon(R.drawable.baseline_error_outline_24px)
                 .setTitle(R.string.error_title)
@@ -72,7 +70,21 @@ class CarsActivity : AppCompatActivity(), Observer<CarsViewState> {
     }
 
     override fun onBackPressed() {
-        if(viewPager?.currentItem == 1) viewPager?.currentItem = 0
-        else super.onBackPressed()
+        when {
+            viewPager?.currentItem == 1 -> viewPager?.currentItem = 0
+            else -> super.onBackPressed()
+        }
+    }
+
+    private fun handleDetailFragment(car:Car?) {
+        val detailFragment = (supportFragmentManager.findFragmentByTag(TAG_DETAIL) as DetailDialogFragment?)
+        car?.also { car ->
+            detailFragment?.let {
+                it.onClickLocation = { viewModel.selectOnMap(car) }
+            } ?: DetailDialogFragment().apply {
+                onClickLocation = { viewModel.selectOnMap(car) }
+            }.show(supportFragmentManager, TAG_DETAIL)
+
+        } ?: detailFragment?.dismiss()
     }
 }

@@ -33,11 +33,15 @@ class DetailDialogFragment: DialogFragment(), Observer<CarsViewState> {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        closeButton.setOnClickListener { dismiss() }
+//        isCancelable = false
+        closeButton.setOnClickListener {
+            carsViewModel?.unselect()
+            dismiss()
+        }
     }
 
-    override fun onDismiss(dialog: DialogInterface) {
-        super.onDismiss(dialog)
+    override fun onCancel(dialog: DialogInterface) {
+        super.onCancel(dialog)
         carsViewModel?.unselect()
     }
 
@@ -51,6 +55,7 @@ class DetailDialogFragment: DialogFragment(), Observer<CarsViewState> {
             Picasso.with(context).load(car.carImageUrl).error(R.drawable.baseline_directions_car_24px).into(image)
 
             locationButton.setOnClickListener {
+                carsViewModel?.unselect()
                 dismiss()
                 onClickLocation?.invoke()
             }

@@ -21,6 +21,11 @@ class CarsViewModel : ViewModel(), ApplicationComponent.Injectable {
         MutableLiveData<CarsViewState>().apply { value = CarsViewState(ViewStateStatus.SUCCESS) }
     }
 
+    private val currentValue: CarsViewState?
+        get() {
+            return viewState.value
+        }
+
     override fun inject(applicationComponent: ApplicationComponent) {
         applicationComponent.inject(this)
     }
@@ -31,30 +36,52 @@ class CarsViewModel : ViewModel(), ApplicationComponent.Injectable {
     }
 
     fun refresh() = scope.launch {
-        viewState.postValue(CarsViewState(ViewStateStatus.PROGRESS))
+        viewState.postValue(
+            CarsViewState(
+                ViewStateStatus.PROGRESS,
+                currentValue?.list ?: emptyList(),
+                currentValue?.carSelected,
+                currentValue?.carSelectedMap
+            )
+        )
 
         dataRepository.fetchCars().let {
-            when(it){
-                is ApiResult.Success -> viewState.postValue(CarsViewState(ViewStateStatus.SUCCESS, it.body))
-                is ApiResult.Error -> viewState.postValue(CarsViewState(ViewStateStatus.ERROR, message = it.exception.message))
+            when (it) {
+                is ApiResult.Success -> viewState.postValue(
+                    CarsViewState(
+                        ViewStateStatus.SUCCESS,
+                        it.body,
+                        currentValue?.carSelected,
+                        currentValue?.carSelectedMap
+                    )
+                )
+                is ApiResult.Error -> viewState.postValue(
+                    CarsViewState(
+                        ViewStateStatus.ERROR,
+                        currentValue?.list ?: emptyList(),
+                        currentValue?.carSelected,
+                        currentValue?.carSelectedMap,
+                        message = it.exception.message
+                    )
+                )
             }
         }
     }
 
     fun select(car: Car) {
-        viewState.value
+        currentValue
             ?.run { CarsViewState(status, list, car, message = message) }
             .also { viewState.value = it }
     }
 
     fun selectOnMap(car: Car) {
-        viewState.value
+        currentValue
             ?.run { CarsViewState(status, list, carSelectedMap = car, message = message) }
             .also { viewState.value = it }
     }
 
     fun unselect() {
-        viewState.value
+        currentValue
             ?.run { CarsViewState(status, list, message = message) }
             .also { viewState.value = it }
     }
