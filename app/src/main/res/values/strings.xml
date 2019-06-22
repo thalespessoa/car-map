@@ -6,4 +6,5 @@
     <string name="error_no_internet">It seems that you are offline. Please check your internet connection.</string>
     <string name="error_server">It seems our servers are tired. Please try again later.</string>
     <string name="error_unknown">An unknown error has occurred, Please contact your system administrator</string>
+    <string name="bt_map_location">Show map location</string>
 </resources>

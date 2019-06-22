@@ -18,4 +18,7 @@ data class Car(
     val carImageUrl:String? = null) {
 
     override fun toString(): String = "[$id : $name]"
+
+    val readableColor:String
+    get() = color?.replace("_", " ")?.capitalize() ?: ""
 }

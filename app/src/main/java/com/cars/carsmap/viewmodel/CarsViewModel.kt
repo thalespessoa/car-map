@@ -43,13 +43,13 @@ class CarsViewModel : ViewModel(), ApplicationComponent.Injectable {
 
     fun select(car: Car) {
         viewState.value
-            ?.run { CarsViewState(status, list, car, carSelectedMap, message) }
+            ?.run { CarsViewState(status, list, car, message = message) }
             .also { viewState.value = it }
     }
 
     fun selectOnMap(car: Car) {
         viewState.value
-            ?.run { CarsViewState(status, list, carSelected, car, message) }
+            ?.run { CarsViewState(status, list, carSelectedMap = car, message = message) }
             .also { viewState.value = it }
     }
 

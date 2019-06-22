@@ -53,7 +53,12 @@ class CarsActivity : AppCompatActivity(), Observer<CarsViewState> {
         }
         viewState?.carSelected?.also {
             if (supportFragmentManager.findFragmentByTag(TAG_DETAIL) == null)
-                DetailDialogFragment().show(supportFragmentManager, TAG_DETAIL)
+                DetailDialogFragment().apply {
+                    onClickLocation = { viewModel.selectOnMap(it) }
+                }.show(supportFragmentManager, TAG_DETAIL)
+            else
+                (supportFragmentManager.findFragmentByTag(TAG_DETAIL) as DetailDialogFragment)
+                    .onClickLocation = { viewModel.selectOnMap(it) }
         }
 
         if(viewState?.status == ViewStateStatus.ERROR) {
@@ -64,5 +69,10 @@ class CarsActivity : AppCompatActivity(), Observer<CarsViewState> {
                 .setPositiveButton(R.string.ok, null)
                 .show()
         }
+    }
+
+    override fun onBackPressed() {
+        if(viewPager?.currentItem == 1) viewPager?.currentItem = 0
+        else super.onBackPressed()
     }
 }

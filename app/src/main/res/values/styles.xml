@@ -9,8 +9,9 @@
     </style>
 
     <style name="TextHeader" parent="@android:style/TextAppearance">
-        <item name="android:textColor">@color/colorBaseDark</item>
+        <item name="android:textColor">@color/colorBaseLight</item>
         <item name="android:background">@color/colorPrimary</item>
+        <item name="android:textAllCaps">true</item>
         <item name="android:textSize"> 15sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:maxLines">2</item>
@@ -43,6 +44,11 @@
         <item name="tabBackground">?attr/selectableItemBackground</item>
         <item name="tabTextAppearance">@style/TextAppearance.Design.Tab</item>
         <item name="tabSelectedTextColor">?android:textColorPrimary</item>
+    </style>
+
+
+    <style name="ListTitleDark" parent="ListTitle">
+        <item name="android:textColor">@color/colorBaseDark</item>
     </style>
 
 </resources>

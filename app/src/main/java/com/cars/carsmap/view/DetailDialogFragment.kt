@@ -21,6 +21,8 @@ class DetailDialogFragment: DialogFragment(), Observer<CarsViewState> {
         activity?.let { ViewModelProviders.of(it, ViewModelFactory()).get(CarsViewModel::class.java) }
     }
 
+    var onClickLocation:(() -> Unit)? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         carsViewModel?.viewState?.observe(this, this)
@@ -29,6 +31,11 @@ class DetailDialogFragment: DialogFragment(), Observer<CarsViewState> {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
         inflater.inflate(R.layout.fragment_car_detail, container, false)
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        closeButton.setOnClickListener { dismiss() }
+    }
+
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
         carsViewModel?.unselect()
@@ -36,8 +43,17 @@ class DetailDialogFragment: DialogFragment(), Observer<CarsViewState> {
 
     override fun onChanged(viewState: CarsViewState?) {
         viewState?.carSelected?.also { car ->
-            title.text = car.name
-            Picasso.with(context).load(car.carImageUrl).into(image)
+            title.text = car.modelName
+            color.text = car.readableColor
+            name.text = car.name
+            group.text = car.group
+            serie.text = car.series
+            Picasso.with(context).load(car.carImageUrl).error(R.drawable.baseline_directions_car_24px).into(image)
+
+            locationButton.setOnClickListener {
+                dismiss()
+                onClickLocation?.invoke()
+            }
         }
     }
 }

@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -14,12 +15,12 @@ import com.cars.carsmap.R
 import com.cars.carsmap.ViewModelFactory
 import com.cars.carsmap.view.adapter.CarsListAdapter
 import com.cars.carsmap.viewmodel.CarsViewModel
+import com.cars.carsmap.viewmodel.ViewStateStatus
 import kotlinx.android.synthetic.main.fragment_list.*
 
 
 
-class ListFragment : Fragment(),
-    SwipeRefreshLayout.OnRefreshListener {
+class ListFragment : Fragment() {
 
     private val recyclerView: RecyclerView by lazy { recycler_view }
     private val swipeRefreshLayout: SwipeRefreshLayout by lazy { swipe_refresh_layout }
@@ -43,14 +44,13 @@ class ListFragment : Fragment(),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         recyclerView.adapter = carsAdapter
-        swipeRefreshLayout.setOnRefreshListener(this)
 
+        swipeRefreshLayout.setOnRefreshListener { carsViewModel?.refresh() }
         carsAdapter.onCarSelected = { carsViewModel?.select(it) }
         carsAdapter.onCarPlaceSelected = { carsViewModel?.selectOnMap(it) }
-    }
 
-    override fun onRefresh() {
-        carsViewModel?.refresh()
-        swipeRefreshLayout.isRefreshing = false
+        carsViewModel?.viewState?.observe(this, Observer {
+             swipeRefreshLayout.isRefreshing = (it.status == ViewStateStatus.PROGRESS)
+        })
     }
 }

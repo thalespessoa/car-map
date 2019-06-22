@@ -38,7 +38,7 @@ class CarsListAdapter : RecyclerView.Adapter<CarsListAdapter.Holder>(), Bindable
     inner class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(car: Car) {
             itemView.modelName.text = car.modelName
-            itemView.color.text = car.color?.replace("_", " ")?.capitalize()
+            itemView.color.text = car.readableColor
 
 
             Picasso.with(itemView.context)
