@@ -14,8 +14,15 @@ import java.net.UnknownHostException
 
 class DataRepository(private val api: Api, private var application: Application?) {
 
+    //----------------------------------------------------------------------------------------------
+    // Public
+    //----------------------------------------------------------------------------------------------
+
     suspend fun fetchCars(): ApiResult<List<Car>> = doSafeRequest { api.fetchCars() }
 
+    //----------------------------------------------------------------------------------------------
+    // Private
+    //----------------------------------------------------------------------------------------------
 
     private suspend fun <T : Any> doSafeRequest(call: suspend () -> Deferred<Response<T>>): ApiResult<T> =
         try {
@@ -23,16 +30,28 @@ class DataRepository(private val api: Api, private var application: Application?
                 .let {
                     when {
                         it.isSuccessful -> ApiResult.Success(it.body()!!)
-                        it.message().isNotEmpty() -> ApiResult.Error(java.lang.Exception(it.message()))
-                        else -> ApiResult.Error(java.lang.Exception(application?.resources?.getString(R.string.error_server)))
+                        else -> handleFailResponse(it)
                     }
-
                 }
-        } catch (exception: UnknownHostException) {
-            ApiResult.Error(java.lang.Exception(application?.resources?.getString(R.string.error_no_internet)))
-        } catch (exception: IOException) {
-            ApiResult.Error(java.lang.Exception(application?.resources?.getString(R.string.error_server)))
         } catch (exception: Exception) {
-            ApiResult.Error(java.lang.Exception(application?.resources?.getString(R.string.error_unknown)))
+            handleFailException(exception)
         }
+
+    private fun <T>handleFailResponse(response:Response<T>) =
+        when {
+            response.message().isNotEmpty() -> response.message()
+            else -> application?.resources?.getString(R.string.error_server)
+        }.let {
+            ApiResult.Error(Exception(it))
+        }
+
+    private fun handleFailException(exception:Exception) =
+        when(exception) {
+            is UnknownHostException -> application?.resources?.getString(R.string.error_no_internet)
+            is IOException -> application?.resources?.getString(R.string.error_server)
+            else -> application?.resources?.getString(R.string.error_unknown)
+        }.let {
+            ApiResult.Error(Exception(it))
+        }
+
 }

@@ -76,13 +76,8 @@ class CarsActivity : AppCompatActivity(), Observer<CarsViewState> {
 
     private fun handleDetailFragment(car:Car?) {
         val detailFragment = (supportFragmentManager.findFragmentByTag(TAG_DETAIL) as DetailDialogFragment?)
-        car?.also { car ->
-            detailFragment?.let {
-                it.onClickLocation = { viewModel.selectOnMap(car) }
-            } ?: DetailDialogFragment().apply {
-                onClickLocation = { viewModel.selectOnMap(car) }
-            }.show(supportFragmentManager, TAG_DETAIL)
-
+        car?.let {
+            detailFragment ?: DetailDialogFragment().show(supportFragmentManager, TAG_DETAIL)
         } ?: detailFragment?.dismiss()
     }
 }

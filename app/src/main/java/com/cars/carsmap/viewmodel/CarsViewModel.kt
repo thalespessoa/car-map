@@ -22,9 +22,7 @@ class CarsViewModel : ViewModel(), ApplicationComponent.Injectable {
     }
 
     private val currentValue: CarsViewState?
-        get() {
-            return viewState.value
-        }
+        get() = viewState.value
 
     override fun inject(applicationComponent: ApplicationComponent) {
         applicationComponent.inject(this)
@@ -41,7 +39,7 @@ class CarsViewModel : ViewModel(), ApplicationComponent.Injectable {
                 ViewStateStatus.PROGRESS,
                 currentValue?.list ?: emptyList(),
                 currentValue?.carSelected,
-                currentValue?.carSelectedMap
+                null
             )
         )
 
@@ -52,7 +50,7 @@ class CarsViewModel : ViewModel(), ApplicationComponent.Injectable {
                         ViewStateStatus.SUCCESS,
                         it.body,
                         currentValue?.carSelected,
-                        currentValue?.carSelectedMap
+                        null
                     )
                 )
                 is ApiResult.Error -> viewState.postValue(

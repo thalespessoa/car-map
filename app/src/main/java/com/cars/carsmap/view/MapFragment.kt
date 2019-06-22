@@ -59,7 +59,9 @@ class MapFragment : SupportMapFragment(),
         map?.clear()
 
         if(lastLocation == null)
-            map?.animateCamera(CameraUpdateFactory.newLatLngZoom(viewState?.list?.firstOrNull()?.latLng, 8f))
+            viewState?.list?.firstOrNull()?.latLng?.let { position ->
+                map?.animateCamera(CameraUpdateFactory.newLatLngZoom(position, 8f))
+            }
 
         viewState?.list?.forEach { car ->
             MarkerOptions()

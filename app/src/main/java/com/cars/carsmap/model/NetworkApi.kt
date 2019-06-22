@@ -21,9 +21,6 @@ class NetworkApi {
     companion object {
         private const val BASE_URL = "https://cdn.sixt.io/"
         private const val LIST_URL = "/codingtask/cars"
-
-//        private const val BASE_URL = "http://api.openweathermap.org"
-//        private const val LIST_URL = "/data/2.5/"
     }
 
 

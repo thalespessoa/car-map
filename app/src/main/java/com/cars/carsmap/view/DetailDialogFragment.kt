@@ -21,8 +21,6 @@ class DetailDialogFragment: DialogFragment(), Observer<CarsViewState> {
         activity?.let { ViewModelProviders.of(it, ViewModelFactory()).get(CarsViewModel::class.java) }
     }
 
-    var onClickLocation:(() -> Unit)? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         carsViewModel?.viewState?.observe(this, this)
@@ -33,7 +31,6 @@ class DetailDialogFragment: DialogFragment(), Observer<CarsViewState> {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        isCancelable = false
         closeButton.setOnClickListener {
             carsViewModel?.unselect()
             dismiss()
@@ -56,8 +53,8 @@ class DetailDialogFragment: DialogFragment(), Observer<CarsViewState> {
 
             locationButton.setOnClickListener {
                 carsViewModel?.unselect()
+                carsViewModel?.selectOnMap(car)
                 dismiss()
-                onClickLocation?.invoke()
             }
         }
     }
