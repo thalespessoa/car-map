@@ -20,7 +20,7 @@
 
     <TextView
             android:id="@+id/modelName"
-            style="@style/ListTitle"
+            style="@style/ListTitleDark"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/image"
@@ -28,7 +28,7 @@
 
     <TextView
             android:id="@+id/title"
-            style="@style/ListText"
+            style="@style/ListTextDark"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/modelName"

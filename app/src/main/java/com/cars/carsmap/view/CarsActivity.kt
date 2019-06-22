@@ -31,10 +31,6 @@ class CarsActivity : AppCompatActivity(), Observer<CarsViewState> {
     private val tabLayout: TabLayout? by lazy { findViewById<TabLayout>(R.id.tab_layout) }
     private val viewPager: ViewPager? by lazy { findViewById<ViewPager>(R.id.view_pager) }
     private val appBarLayout: AppBarLayout? by lazy { findViewById<AppBarLayout>(R.id.app_bar_layout) }
-    private val detailFragment: DetailDialogFragment?
-        get() {
-            return (supportFragmentManager.findFragmentByTag(TAG_DETAIL) as DetailDialogFragment)
-        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,6 +38,8 @@ class CarsActivity : AppCompatActivity(), Observer<CarsViewState> {
 
         viewPager?.adapter = ViewPagerAdapter(supportFragmentManager)
         tabLayout?.setupWithViewPager(viewPager)
+        tabLayout?.getTabAt(0)?.setIcon(R.drawable.baseline_list_24px)
+        tabLayout?.getTabAt(1)?.setIcon(R.drawable.baseline_map_24px)
     }
 
     override fun onStart() {
