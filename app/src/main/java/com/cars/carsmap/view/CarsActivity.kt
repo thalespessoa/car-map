@@ -16,6 +16,8 @@ import com.cars.carsmap.viewmodel.ViewStateStatus
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayout
 
+
+
 class CarsActivity : AppCompatActivity(), Observer<CarsViewState> {
 
     companion object {
@@ -57,14 +59,8 @@ class CarsActivity : AppCompatActivity(), Observer<CarsViewState> {
 
         handleDetailFragment(viewState?.carSelected)
 
-        if (viewState?.status == ViewStateStatus.ERROR) {
-            AlertDialog.Builder(this)
-                .setIcon(R.drawable.baseline_error_outline_24px)
-                .setTitle(R.string.error_title)
-                .setMessage(viewState.message)
-                .setPositiveButton(R.string.ok, null)
-                .show()
-        }
+        if (viewState?.status == ViewStateStatus.ERROR)
+            handleErrorState(viewState)
     }
 
     override fun onBackPressed() {
@@ -74,7 +70,19 @@ class CarsActivity : AppCompatActivity(), Observer<CarsViewState> {
         }
     }
 
-    private fun handleDetailFragment(car:Car?) {
+    private fun handleErrorState(viewState: CarsViewState) {
+        if (viewState.message?.isNotBlank() == true)
+            AlertDialog.Builder(this)
+                .setIcon(R.drawable.baseline_error_outline_24px)
+                .setTitle(R.string.error_title)
+                .setMessage(viewState.message)
+                .setOnDismissListener { viewModel?.readErrorMessage() }
+                .setPositiveButton(R.string.ok, null)
+                .show()
+
+    }
+
+    private fun handleDetailFragment(car: Car?) {
         val detailFragment = (supportFragmentManager.findFragmentByTag(TAG_DETAIL) as DetailDialogFragment?)
         car?.let {
             detailFragment ?: DetailDialogFragment().show(supportFragmentManager, TAG_DETAIL)

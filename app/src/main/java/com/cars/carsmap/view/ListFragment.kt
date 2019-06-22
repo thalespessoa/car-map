@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -24,6 +25,8 @@ class ListFragment : Fragment() {
 
     private val recyclerView: RecyclerView by lazy { recycler_view }
     private val swipeRefreshLayout: SwipeRefreshLayout by lazy { swipe_refresh_layout }
+    private val emptyImage by lazy { empty_image }
+    private val retryButton:Button by lazy { retry_button }
     private val carsAdapter = CarsListAdapter()
 
     private val carsViewModel by lazy {
@@ -48,9 +51,13 @@ class ListFragment : Fragment() {
         swipeRefreshLayout.setOnRefreshListener { carsViewModel?.refresh() }
         carsAdapter.onCarSelected = { carsViewModel?.select(it) }
         carsAdapter.onCarPlaceSelected = { carsViewModel?.selectOnMap(it) }
+        retryButton.setOnClickListener { carsViewModel?.refresh() }
 
         carsViewModel?.viewState?.observe(this, Observer {
-             swipeRefreshLayout.isRefreshing = (it.status == ViewStateStatus.PROGRESS)
+            val isProgress = it?.status == ViewStateStatus.PROGRESS
+            val listIsEmpty = it?.list?.isEmpty() == true
+            swipeRefreshLayout.isRefreshing = isProgress
+            emptyImage.visibility = if(listIsEmpty && !isProgress) View.VISIBLE else View.INVISIBLE
         })
     }
 }

@@ -8,20 +8,47 @@
                 type="com.cars.carsmap.viewmodel.CarsViewModel"/>
     </data>
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/swipe_refresh_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+    <RelativeLayout android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
-        <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_view"
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                android:id="@+id/swipe_refresh_layout"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
-                android:clipToPadding="false"
-                android:background="@color/colorBaseDark"
-                app:data="@{viewModel.viewState.list}"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+                android:layout_height="match_parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:clipToPadding="false"
+                    android:background="@color/colorBaseDark"
+                    app:data="@{viewModel.viewState.list}"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+        <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/empty_image"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:orientation="vertical">
+
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:drawableTop="@drawable/baseline_directions_car_96px"
+                      style="@style/ListTitle"
+                      android:text="@string/no_cars_available"/>
+
+            <Button android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/retry_button"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/retry"
+                    style="@style/Button"/>
+        </LinearLayout>
+
+    </RelativeLayout>
 </layout>

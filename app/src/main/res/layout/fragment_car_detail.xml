@@ -59,10 +59,7 @@
                       android:layout_height="wrap_content"
                       android:id="@+id/locationButton"
                       android:drawableStart="@drawable/baseline_place_white_24px"
-                      android:gravity="center"
-                      android:background="@drawable/dark_square_selector"
-                      android:padding="10dp"
-                      android:textColor="@color/colorBase"
+                      style="@style/ButtonDark"
                       android:layout_marginTop="15dp"
                       android:text="@string/bt_map_location"/>
         </LinearLayout>

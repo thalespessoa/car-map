@@ -47,12 +47,27 @@
         <item name="tabSelectedTextColor">?android:textColorPrimary</item>
     </style>
 
+    <style name="Button" parent="@style/Widget.AppCompat.Button.Borderless">
+        <item name="android:textColor">@color/colorBaseDark</item>
+        <item name="android:background">@drawable/base_square_selector</item>
+        <item name="android:textSize">10sp</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:minHeight">24dp</item>
+    </style>
+
     <style name="ListTitleDark" parent="ListTitle">
         <item name="android:textColor">@color/colorBaseDark</item>
     </style>
 
     <style name="ListTextDark" parent="ListText">
         <item name="android:textColor">@color/colorBaseDark</item>
+    </style>
+
+    <style name="ButtonDark" parent="Button">
+        <item name="android:textColor">@color/colorBase</item>
+        <item name="android:background">@drawable/dark_square_selector</item>
     </style>
 
 </resources>

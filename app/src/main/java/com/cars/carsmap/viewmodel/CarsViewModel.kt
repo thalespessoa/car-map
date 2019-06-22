@@ -78,9 +78,16 @@ class CarsViewModel : ViewModel(), ApplicationComponent.Injectable {
             .also { viewState.value = it }
     }
 
+    fun readErrorMessage() {
+        currentValue
+            ?.run { CarsViewState(status, list, carSelected, carSelectedMap) }
+            .also { viewState.value = it }
+    }
+
     fun unselect() {
         currentValue
             ?.run { CarsViewState(status, list, message = message) }
             .also { viewState.value = it }
+
     }
 }
