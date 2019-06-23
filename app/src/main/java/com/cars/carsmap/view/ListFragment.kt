@@ -33,13 +33,18 @@ class ListFragment : Fragment() {
     private val retryButton:Button by lazy { retry_button }
     private val carsAdapter = CarsListAdapter()
 
-    private val carsViewModel by lazy {
-        activity?.let { ViewModelProviders.of(it, ViewModelFactory()).get(CarsViewModel::class.java) }
-    }
+    var viewModelFactory = ViewModelFactory()
+
+    private lateinit var carsViewModel:CarsViewModel
 
     //----------------------------------------------------------------------------------------------
     // Lifecycle
     //----------------------------------------------------------------------------------------------
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        carsViewModel = ViewModelProviders.of(activity!!, viewModelFactory).get(CarsViewModel::class.java)
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
         DataBindingUtil.inflate<ListBinding>(inflater, R.layout.fragment_list, container, false)

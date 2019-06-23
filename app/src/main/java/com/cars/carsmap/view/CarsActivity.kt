@@ -1,6 +1,7 @@
 package com.cars.carsmap.view
 
 import android.os.Bundle
+import androidx.annotation.VisibleForTesting
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -17,18 +18,16 @@ import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayout
 
 
-
 class CarsActivity : AppCompatActivity(), Observer<CarsViewState> {
 
     companion object {
         private const val TAG_DETAIL = "detail"
     }
 
-    private val viewModel by lazy {
-        ViewModelProviders.of(this, ViewModelFactory()).get(CarsViewModel::class.java).also {
-            it.viewState.observe(this, this)
-        }
-    }
+    private lateinit var viewModel:CarsViewModel
+
+    @VisibleForTesting
+    var viewModelFactory = ViewModelFactory()
 
     private val tabLayout: TabLayout? by lazy { findViewById<TabLayout>(R.id.tab_layout) }
     private val viewPager: ViewPager? by lazy { findViewById<ViewPager>(R.id.view_pager) }
@@ -37,6 +36,9 @@ class CarsActivity : AppCompatActivity(), Observer<CarsViewState> {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cars)
+
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(CarsViewModel::class.java)
+        viewModel.viewState.observe(this, this)
 
         viewPager?.adapter = ViewPagerAdapter(supportFragmentManager)
         tabLayout?.setupWithViewPager(viewPager)

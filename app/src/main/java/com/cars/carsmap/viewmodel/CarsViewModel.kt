@@ -8,6 +8,7 @@ import com.cars.carsmap.model.DataRepository
 import com.cars.carsmap.model.entity.Car
 import kotlinx.coroutines.*
 import javax.inject.Inject
+import kotlin.coroutines.CoroutineContext
 
 
 /**
@@ -20,13 +21,15 @@ import javax.inject.Inject
  * @see CarsViewState
  */
 
-class CarsViewModel : ViewModel(), ApplicationComponent.Injectable {
+class CarsViewModel : ViewModel(), ApplicationComponent.Injectable, CoroutineScope {
 
     @Inject
     lateinit var dataRepository: DataRepository
 
     private val supervisorJob = SupervisorJob()
-    private val scope = CoroutineScope(Dispatchers.Main + supervisorJob)
+
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.Main + supervisorJob
 
     val viewState: MutableLiveData<CarsViewState> by lazy {
         MutableLiveData<CarsViewState>().apply { value = CarsViewState(ViewStateStatus.SUCCESS) }
@@ -46,7 +49,7 @@ class CarsViewModel : ViewModel(), ApplicationComponent.Injectable {
      *   or in case of Fails create a CarsViewState with status ERROR and a error message
      *
      */
-    fun refresh() = scope.launch {
+    fun refresh() = launch {
         viewState.value = CarsViewState(
             ViewStateStatus.PROGRESS,
             currentValue?.list ?: emptyList(),
@@ -113,7 +116,7 @@ class CarsViewModel : ViewModel(), ApplicationComponent.Injectable {
 
     override fun onCleared() {
         super.onCleared()
-        scope.coroutineContext.cancelChildren()
+        coroutineContext.cancelChildren()
     }
 
     override fun inject(applicationComponent: ApplicationComponent) {
