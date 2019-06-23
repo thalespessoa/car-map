@@ -7,7 +7,6 @@ import javax.inject.Singleton
 
 /**
  * Dagger component to handle dependency injection
- *
  */
 
 @Singleton

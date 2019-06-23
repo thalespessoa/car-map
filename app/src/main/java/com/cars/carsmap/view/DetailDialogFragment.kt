@@ -15,6 +15,11 @@ import com.cars.carsmap.viewmodel.CarsViewState
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_car_detail.*
 
+/**
+ * Dialog responsible to show cars details (CarsViewState.carSelected)
+ *
+ * @see CarsViewState
+ */
 class DetailDialogFragment: DialogFragment(), Observer<CarsViewState> {
 
     private val carsViewModel by lazy {

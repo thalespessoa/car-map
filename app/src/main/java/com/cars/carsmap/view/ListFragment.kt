@@ -16,11 +16,15 @@ import com.cars.carsmap.R
 import com.cars.carsmap.ViewModelFactory
 import com.cars.carsmap.view.adapter.CarsListAdapter
 import com.cars.carsmap.viewmodel.CarsViewModel
+import com.cars.carsmap.viewmodel.CarsViewState
 import com.cars.carsmap.viewmodel.ViewStateStatus
 import kotlinx.android.synthetic.main.fragment_list.*
 
-
-
+/**
+ * Fragment responsible to show the cars list (CarsViewState.list) on the list
+ *
+ * @see CarsViewState
+ */
 class ListFragment : Fragment() {
 
     private val recyclerView: RecyclerView by lazy { recycler_view }

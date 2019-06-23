@@ -11,6 +11,14 @@ import retrofit2.Response
 import java.io.IOException
 import java.net.UnknownHostException
 
+/**
+ * Class responsible to manage all the data from the app.
+ * It uses the class 'NetworkApi' to fetch the data from server and create a class 'ApiResult'to be used by viewModel
+ *
+ * @see NetworkApi
+ * @see ApiResult
+ * @see CarsViewModel
+ */
 
 class DataRepository(private val api: Api, private var application: Application?) {
 
@@ -18,12 +26,18 @@ class DataRepository(private val api: Api, private var application: Application?
     // Public
     //----------------------------------------------------------------------------------------------
 
+    /**
+     * Fetch cars list
+     */
     suspend fun fetchCars(): ApiResult<List<Car>> = doSafeRequest { api.fetchCars() }
 
     //----------------------------------------------------------------------------------------------
     // Private
     //----------------------------------------------------------------------------------------------
 
+    /**
+     * Generic method responsible to do requests crash safely
+     */
     private suspend fun <T : Any> doSafeRequest(call: suspend () -> Deferred<Response<T>>): ApiResult<T> =
         try {
             withContext(Dispatchers.IO) { call.invoke().await() }

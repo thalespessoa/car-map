@@ -11,9 +11,7 @@ import retrofit2.http.GET
 
 /**
  * Class responsible for the communication with server
- * All remote data access comes from here.
- *
- * Created by thalespessoa on 19/5/19.
+ * All remote data access comes from here.\
  */
 
 class NetworkApi {
@@ -22,7 +20,6 @@ class NetworkApi {
         private const val BASE_URL = "https://cdn.sixt.io/"
         private const val LIST_URL = "/codingtask/cars"
     }
-
 
     private val clientBuilder = OkHttpClient.Builder().build()
 

@@ -22,6 +22,9 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 
+/**
+ * Fragment responsible to show the cars list (CarsViewState.list) on the map
+ */
 class MapFragment : SupportMapFragment(),
     OnMapReadyCallback,
     GoogleMap.OnInfoWindowClickListener,
