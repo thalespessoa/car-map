@@ -23,7 +23,10 @@ import kotlinx.android.synthetic.main.fragment_list.*
 /**
  * Fragment responsible to show the cars list (CarsViewState.list) on the list
  *
+ * All possible states are represented by a unique and immutable CarsViewState inside the CarsViewModel
+ *
  * @see CarsViewState
+ * @see CarsViewModel
  */
 class ListFragment : Fragment() {
 

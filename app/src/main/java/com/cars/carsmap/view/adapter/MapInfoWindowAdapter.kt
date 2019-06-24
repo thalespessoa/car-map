@@ -8,7 +8,11 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.Marker
 import kotlinx.android.synthetic.main.item_info_window_car.view.*
 
-
+/**
+ * Adapter responsible to create the MapInfoWindow in MapFragment
+ *
+ * @see com.cars.carsmap.view.MapFragment
+ */
 class MapInfoWindowAdapter(private val inflater: LayoutInflater) : GoogleMap.InfoWindowAdapter {
 
     override fun getInfoContents(marker: Marker?): View? {

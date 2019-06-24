@@ -6,6 +6,12 @@ import androidx.fragment.app.FragmentStatePagerAdapter
 import com.cars.carsmap.view.ListFragment
 import com.cars.carsmap.view.MapFragment
 
+/**
+ * ViewPagerAdapter used by phone portrait layout, contains a ListFragment and MapFragment
+ *
+ * @see ListFragment
+ * @see MapFragment
+ */
 class ViewPagerAdapter(fragmentManager: FragmentManager): FragmentStatePagerAdapter(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
     private val fragments = arrayListOf(ListFragment(), MapFragment())

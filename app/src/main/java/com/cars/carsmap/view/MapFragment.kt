@@ -23,6 +23,11 @@ import com.google.android.gms.maps.model.MarkerOptions
 
 /**
  * Fragment responsible to show the cars list (CarsViewState.list) on the map
+ *
+ * All possible states are represented by a unique and immutable CarsViewState inside the CarsViewModel
+ *
+ * @see CarsViewState
+ * @see CarsViewModel
  */
 class MapFragment : SupportMapFragment(),
     OnMapReadyCallback,

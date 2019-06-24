@@ -1,7 +1,6 @@
 package com.cars.carsmap.view
 
 import android.os.Bundle
-import androidx.annotation.VisibleForTesting
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -17,7 +16,16 @@ import com.cars.carsmap.viewmodel.ViewStateStatus
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayout
 
-
+/**
+ * Main class, responsible to present ListFragment and MapFragment as a ViewPager in case of phone portrait
+ * or present ListFragment and MapFragment as splitted screen in case of phone landscape and tablet both orientation.
+ * This class is also responsible for the navigation between the fragments when it's presented as ViewPager
+ *
+ * All possible states are represented by a unique and immutable CarsViewState inside the CarsViewModel
+ *
+ * @see CarsViewState
+ * @see CarsViewModel
+ */
 class CarsActivity : AppCompatActivity(), Observer<CarsViewState> {
 
     companion object {

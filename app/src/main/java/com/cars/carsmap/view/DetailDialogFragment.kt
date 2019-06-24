@@ -18,7 +18,10 @@ import kotlinx.android.synthetic.main.fragment_car_detail.*
 /**
  * Dialog responsible to show cars details (CarsViewState.carSelected)
  *
+ * All possible states are represented by a unique and immutable CarsViewState inside the CarsViewModel
+ *
  * @see CarsViewState
+ * @see CarsViewModel
  */
 class DetailDialogFragment: DialogFragment(), Observer<CarsViewState> {
 

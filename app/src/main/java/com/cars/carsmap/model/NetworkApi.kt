@@ -11,7 +11,7 @@ import retrofit2.http.GET
 
 /**
  * Class responsible for the communication with server
- * All remote data access comes from here.\
+ * All remote data access comes from here.
  */
 
 class NetworkApi {

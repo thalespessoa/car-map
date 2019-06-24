@@ -3,10 +3,9 @@ package com.cars.carsmap.view
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.assertion.ViewAssertions.*
+import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.intent.rule.IntentsTestRule
 import androidx.test.espresso.matcher.ViewMatchers.*
-import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.runner.AndroidJUnit4
 import com.cars.carsmap.R
 import com.cars.carsmap.TestViewModelFactory
@@ -45,7 +44,7 @@ class ListFragmentTest {
 
     private lateinit var listFragment: ListFragment
 
-    private val fakeList = listOf(Car("1"), Car("2"), Car("2"))
+    private val fakeList = listOf(Car("1"), Car("2"), Car("3"), Car("4"))
 
     @Before
     fun setUp() {

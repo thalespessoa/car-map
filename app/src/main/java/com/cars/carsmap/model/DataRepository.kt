@@ -12,12 +12,11 @@ import java.io.IOException
 import java.net.UnknownHostException
 
 /**
- * Class responsible to manage all the data from the app.
- * It uses the class 'NetworkApi' to fetch the data from server and create a class 'ApiResult'to be used by viewModel
+ * Class responsible to manage all the data of the app.
+ * It uses the class 'NetworkApi' to fetch the data from server and create a class 'ApiResult'to be used by the app
  *
  * @see NetworkApi
  * @see ApiResult
- * @see CarsViewModel
  */
 
 class DataRepository(private val api: Api, private var application: Application?) {

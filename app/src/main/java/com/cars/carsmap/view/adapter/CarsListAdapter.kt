@@ -6,10 +6,16 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.cars.carsmap.R
 import com.cars.carsmap.model.entity.Car
+import com.cars.carsmap.view.ListFragment
 import com.cars.carsmap.view.bind.BindableAdapter
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_car.view.*
 
+/**
+ * Adapter for the cars list
+ *
+ * @see ListFragment
+ */
 class CarsListAdapter : RecyclerView.Adapter<CarsListAdapter.Holder>(), BindableAdapter<Car> {
 
     private var items = emptyList<Car>()
