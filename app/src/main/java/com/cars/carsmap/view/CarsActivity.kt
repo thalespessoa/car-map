@@ -26,8 +26,7 @@ class CarsActivity : AppCompatActivity(), Observer<CarsViewState> {
 
     private lateinit var viewModel:CarsViewModel
 
-    @VisibleForTesting
-    var viewModelFactory = ViewModelFactory()
+    private var viewModelFactory = ViewModelFactory()
 
     private val tabLayout: TabLayout? by lazy { findViewById<TabLayout>(R.id.tab_layout) }
     private val viewPager: ViewPager? by lazy { findViewById<ViewPager>(R.id.view_pager) }
@@ -39,16 +38,12 @@ class CarsActivity : AppCompatActivity(), Observer<CarsViewState> {
 
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(CarsViewModel::class.java)
         viewModel.viewState.observe(this, this)
+        viewModel.refresh()
 
         viewPager?.adapter = ViewPagerAdapter(supportFragmentManager)
         tabLayout?.setupWithViewPager(viewPager)
         tabLayout?.getTabAt(0)?.setIcon(R.drawable.baseline_list_24px)
         tabLayout?.getTabAt(1)?.setIcon(R.drawable.baseline_map_24px)
-    }
-
-    override fun onStart() {
-        super.onStart()
-        viewModel.refresh()
     }
 
     override fun onChanged(viewState: CarsViewState?) {

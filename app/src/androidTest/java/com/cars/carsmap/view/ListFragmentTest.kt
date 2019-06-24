@@ -3,9 +3,9 @@ package com.cars.carsmap.view
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.assertion.ViewAssertions
+import androidx.test.espresso.assertion.ViewAssertions.*
 import androidx.test.espresso.intent.rule.IntentsTestRule
-import androidx.test.espresso.matcher.ViewMatchers
+import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.runner.AndroidJUnit4
 import com.cars.carsmap.R
@@ -61,22 +61,22 @@ class ListFragmentTest {
     fun testCarList() {
         viewState.value = CarsViewState(ViewStateStatus.SUCCESS, fakeList)
 
-        onView(withId(R.id.recycler_view)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        onView(withId(R.id.empty_image)).check(ViewAssertions.matches(ViewMatchers.withEffectiveVisibility(ViewMatchers.Visibility.INVISIBLE)))
+        onView(withId(R.id.recycler_view)).check(matches(isDisplayed()))
+        onView(withId(R.id.empty_image)).check(matches(withEffectiveVisibility(Visibility.INVISIBLE)))
     }
 
     @Test
     fun testEmptyState() {
         viewState.value = CarsViewState(ViewStateStatus.SUCCESS)
-        onView(withId(R.id.empty_image)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        onView(withId(R.id.empty_image)).check(matches(isDisplayed()))
 
         viewState.value = CarsViewState(ViewStateStatus.ERROR)
-        onView(withId(R.id.empty_image)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        onView(withId(R.id.empty_image)).check(matches(isDisplayed()))
     }
 
     @Test
     fun testProgressState() {
         viewState.value = CarsViewState(ViewStateStatus.PROGRESS)
-        onView(withId(R.id.empty_image)).check(ViewAssertions.matches(ViewMatchers.withEffectiveVisibility(ViewMatchers.Visibility.INVISIBLE)))
+        onView(withId(R.id.empty_image)).check(matches(withEffectiveVisibility(Visibility.INVISIBLE)))
     }
 }

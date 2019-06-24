@@ -18,7 +18,7 @@ class CarsViewModelTest {
     @get:Rule
     var rule = InstantTaskExecutorRule()
 
-    private val viewModel:CarsViewModel = CarsViewModel()
+    private val viewModel: CarsViewModel = CarsViewModel()
 
     @Test
     fun testSelect() = runBlocking {

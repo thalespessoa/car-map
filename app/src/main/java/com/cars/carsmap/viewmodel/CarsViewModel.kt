@@ -1,5 +1,6 @@
 package com.cars.carsmap.viewmodel
 
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.cars.carsmap.ApplicationComponent
@@ -7,6 +8,7 @@ import com.cars.carsmap.model.ApiResult
 import com.cars.carsmap.model.DataRepository
 import com.cars.carsmap.model.entity.Car
 import kotlinx.coroutines.*
+import org.jetbrains.annotations.TestOnly
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 

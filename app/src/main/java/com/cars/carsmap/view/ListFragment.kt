@@ -49,7 +49,7 @@ class ListFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
         DataBindingUtil.inflate<ListBinding>(inflater, R.layout.fragment_list, container, false)
             .apply {
-                setLifecycleOwner(this@ListFragment)
+                lifecycleOwner = this@ListFragment
                 viewModel = carsViewModel
             }.root
 
@@ -57,12 +57,12 @@ class ListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         recyclerView.adapter = carsAdapter
 
-        swipeRefreshLayout.setOnRefreshListener { carsViewModel?.refresh() }
-        carsAdapter.onCarSelected = { carsViewModel?.select(it) }
-        carsAdapter.onCarPlaceSelected = { carsViewModel?.selectOnMap(it) }
-        retryButton.setOnClickListener { carsViewModel?.refresh() }
+        swipeRefreshLayout.setOnRefreshListener { carsViewModel.refresh() }
+        carsAdapter.onCarSelected = { carsViewModel.select(it) }
+        carsAdapter.onCarPlaceSelected = { carsViewModel.selectOnMap(it) }
+        retryButton.setOnClickListener { carsViewModel.refresh() }
 
-        carsViewModel?.viewState?.observe(this, Observer {
+        carsViewModel.viewState.observe(this, Observer {
             val isProgress = it?.status == ViewStateStatus.PROGRESS
             val listIsEmpty = it?.list?.isEmpty() == true
             swipeRefreshLayout.isRefreshing = isProgress

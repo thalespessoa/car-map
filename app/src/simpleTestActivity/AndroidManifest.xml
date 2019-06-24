@@ -15,17 +15,7 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
 
-        <meta-data
-                android:name="com.google.android.geo.API_KEY"
-                android:value="@string/google_maps_key"/>
-
-        <activity android:name=".view.CarsActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
-        </activity>
+        <activity android:name=".view.SingleFragmentActivity"/>
     </application>
 
 </manifest>
