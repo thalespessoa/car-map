@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.annotation.VisibleForTesting
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -36,6 +37,7 @@ class ListFragment : Fragment() {
     private val retryButton:Button by lazy { retry_button }
     private val carsAdapter = CarsListAdapter()
 
+    @VisibleForTesting
     var viewModelFactory = ViewModelFactory()
 
     private lateinit var carsViewModel:CarsViewModel

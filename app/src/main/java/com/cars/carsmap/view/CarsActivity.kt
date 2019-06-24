@@ -34,8 +34,6 @@ class CarsActivity : AppCompatActivity(), Observer<CarsViewState> {
 
     private lateinit var viewModel:CarsViewModel
 
-    private var viewModelFactory = ViewModelFactory()
-
     private val tabLayout: TabLayout? by lazy { findViewById<TabLayout>(R.id.tab_layout) }
     private val viewPager: ViewPager? by lazy { findViewById<ViewPager>(R.id.view_pager) }
     private val appBarLayout: AppBarLayout? by lazy { findViewById<AppBarLayout>(R.id.app_bar_layout) }
@@ -44,7 +42,7 @@ class CarsActivity : AppCompatActivity(), Observer<CarsViewState> {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cars)
 
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(CarsViewModel::class.java)
+        viewModel = ViewModelProviders.of(this, ViewModelFactory()).get(CarsViewModel::class.java)
         viewModel.viewState.observe(this, this)
         viewModel.refresh()
 
