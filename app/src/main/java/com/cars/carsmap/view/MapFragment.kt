@@ -2,7 +2,6 @@ package com.cars.carsmap.view
 
 import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.content.pm.PackageManager.PERMISSION_GRANTED
-import android.location.Location
 import android.os.Bundle
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.Observer
@@ -36,7 +35,7 @@ class MapFragment : SupportMapFragment(),
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private var map: GoogleMap? = null
-    private var lastLocation: Location? = null
+    private var currentLatLng: LatLng? = null
 
     private val carsViewModel by lazy {
         activity?.let { ViewModelProviders.of(it, ViewModelFactory()).get(CarsViewModel::class.java) }
@@ -61,8 +60,9 @@ class MapFragment : SupportMapFragment(),
     override fun onChanged(viewState: CarsViewState?) {
         map?.clear()
 
-        if(lastLocation == null)
+        if(currentLatLng == null)
             viewState?.list?.firstOrNull()?.latLng?.let { position ->
+                currentLatLng = position
                 map?.animateCamera(CameraUpdateFactory.newLatLngZoom(position, 8f))
             }
 
@@ -110,11 +110,8 @@ class MapFragment : SupportMapFragment(),
             if (ActivityCompat.checkSelfPermission(it, ACCESS_FINE_LOCATION) == PERMISSION_GRANTED) {
                 map?.isMyLocationEnabled = true
                 fusedLocationClient.lastLocation.addOnSuccessListener(it) { location ->
-                    this.lastLocation = location
-                    location?.let { location ->
-                        val currentLatLng = LatLng(location.latitude, location.longitude)
-                        map?.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 12f))
-                    }
+                    this.currentLatLng = LatLng(location.latitude, location.longitude)
+                    map?.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 12f))
                 }
             }
         }
