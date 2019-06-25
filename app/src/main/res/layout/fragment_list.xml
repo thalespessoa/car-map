@@ -9,24 +9,8 @@
     </data>
 
     <RelativeLayout android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-                android:id="@+id/swipe_refresh_layout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-            <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recycler_view"
-                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:paddingTop="5dp"
-                    android:paddingBottom="5dp"
-                    android:clipToPadding="false"
-                    android:background="@color/colorBaseDark"
-                    app:data="@{viewModel.viewState.list}"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
-        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+                    android:background="@color/colorBaseDark">
 
         <LinearLayout
                 android:layout_width="wrap_content"
@@ -49,6 +33,22 @@
                     android:text="@string/retry"
                     style="@style/Button"/>
         </LinearLayout>
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                android:id="@+id/swipe_refresh_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:clipToPadding="false"
+                    app:data="@{viewModel.viewState.list}"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     </RelativeLayout>
 </layout>

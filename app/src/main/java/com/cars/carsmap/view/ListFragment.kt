@@ -71,7 +71,13 @@ class ListFragment : Fragment() {
             val isProgress = it?.status == ViewStateStatus.PROGRESS
             val listIsEmpty = it?.list?.isEmpty() == true
             swipeRefreshLayout.isRefreshing = isProgress
-            emptyImage.visibility = if(listIsEmpty && !isProgress) View.VISIBLE else View.INVISIBLE
+            if(listIsEmpty && !isProgress) {
+                emptyImage.visibility = View.VISIBLE
+                swipeRefreshLayout.visibility = View.INVISIBLE
+            } else {
+                emptyImage.visibility = View.INVISIBLE
+                swipeRefreshLayout.visibility = View.VISIBLE
+            }
         })
     }
 }

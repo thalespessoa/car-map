@@ -6,8 +6,9 @@ import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.intent.rule.IntentsTestRule
 import androidx.test.espresso.matcher.ViewMatchers.*
-import androidx.test.runner.AndroidJUnit4
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.cars.carsmap.R
+import com.cars.carsmap.SingleFragmentActivity
 import com.cars.carsmap.TestViewModelFactory
 import com.cars.carsmap.model.entity.Car
 import com.cars.carsmap.viewmodel.CarsViewModel
@@ -21,6 +22,7 @@ import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.junit.MockitoJUnit
 import org.mockito.junit.MockitoRule
+
 
 @RunWith(AndroidJUnit4::class)
 class ListFragmentTest {
@@ -44,7 +46,11 @@ class ListFragmentTest {
 
     private lateinit var listFragment: ListFragment
 
-    private val fakeList = listOf(Car("1"), Car("2"), Car("3"), Car("4"))
+    private val fakeList = listOf(
+        Car("1", modelName = "Model name 1"),
+        Car("2", modelName = "Model name 2"),
+        Car("3", modelName = "Model name 3"),
+        Car("4", modelName = "Model name 4"))
 
     @Before
     fun setUp() {
@@ -59,23 +65,28 @@ class ListFragmentTest {
     @Test
     fun testCarList() {
         viewState.value = CarsViewState(ViewStateStatus.SUCCESS, fakeList)
-
-        onView(withId(R.id.recycler_view)).check(matches(isDisplayed()))
+        onView(withId(R.id.swipe_refresh_layout)).check(matches(isDisplayed()))
         onView(withId(R.id.empty_image)).check(matches(withEffectiveVisibility(Visibility.INVISIBLE)))
+}
+
+    @Test
+    fun testEmptyStateSuccess() {
+        viewState.value = CarsViewState(ViewStateStatus.SUCCESS)
+        onView(withId(R.id.empty_image)).check(matches(isDisplayed()))
+        onView(withId(R.id.swipe_refresh_layout)).check(matches(withEffectiveVisibility(Visibility.INVISIBLE)))
     }
 
     @Test
-    fun testEmptyState() {
-        viewState.value = CarsViewState(ViewStateStatus.SUCCESS)
-        onView(withId(R.id.empty_image)).check(matches(isDisplayed()))
-
+    fun testEmptyStateError() {
         viewState.value = CarsViewState(ViewStateStatus.ERROR)
         onView(withId(R.id.empty_image)).check(matches(isDisplayed()))
+        onView(withId(R.id.swipe_refresh_layout)).check(matches(withEffectiveVisibility(Visibility.INVISIBLE)))
     }
 
     @Test
     fun testProgressState() {
         viewState.value = CarsViewState(ViewStateStatus.PROGRESS)
         onView(withId(R.id.empty_image)).check(matches(withEffectiveVisibility(Visibility.INVISIBLE)))
+        onView(withId(R.id.swipe_refresh_layout)).check(matches(isDisplayed()))
     }
 }
