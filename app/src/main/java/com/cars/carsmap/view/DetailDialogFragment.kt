@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.VisibleForTesting
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -25,8 +26,11 @@ import kotlinx.android.synthetic.main.fragment_car_detail.*
  */
 class DetailDialogFragment: DialogFragment(), Observer<CarsViewState> {
 
+    @VisibleForTesting
+    var viewModelFactory = ViewModelFactory()
+
     private val carsViewModel by lazy {
-        activity?.let { ViewModelProviders.of(it, ViewModelFactory()).get(CarsViewModel::class.java) }
+        activity?.let { ViewModelProviders.of(it, viewModelFactory).get(CarsViewModel::class.java) }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
