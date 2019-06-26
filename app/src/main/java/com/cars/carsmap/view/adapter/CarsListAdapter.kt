@@ -16,7 +16,8 @@ import kotlinx.android.synthetic.main.item_car.view.*
  *
  * @see ListFragment
  */
-class CarsListAdapter : RecyclerView.Adapter<CarsListAdapter.Holder>(), BindableAdapter<Car> {
+class CarsListAdapter : RecyclerView.Adapter<CarsListAdapter.Holder>(),
+    BindableAdapter<Car> {
 
     private var items = emptyList<Car>()
 

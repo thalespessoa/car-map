@@ -73,20 +73,18 @@ class ListFragmentTest {
     fun testEmptyStateSuccess() {
         viewState.value = CarsViewState(ViewStateStatus.SUCCESS)
         onView(withId(R.id.empty_image)).check(matches(isDisplayed()))
-        onView(withId(R.id.swipe_refresh_layout)).check(matches(withEffectiveVisibility(Visibility.INVISIBLE)))
     }
 
     @Test
     fun testEmptyStateError() {
         viewState.value = CarsViewState(ViewStateStatus.ERROR)
         onView(withId(R.id.empty_image)).check(matches(isDisplayed()))
-        onView(withId(R.id.swipe_refresh_layout)).check(matches(withEffectiveVisibility(Visibility.INVISIBLE)))
     }
 
     @Test
     fun testProgressState() {
         viewState.value = CarsViewState(ViewStateStatus.PROGRESS)
-        onView(withId(R.id.empty_image)).check(matches(withEffectiveVisibility(Visibility.INVISIBLE)))
         onView(withId(R.id.swipe_refresh_layout)).check(matches(isDisplayed()))
+        onView(withId(R.id.empty_image)).check(matches(withEffectiveVisibility(Visibility.INVISIBLE)))
     }
 }

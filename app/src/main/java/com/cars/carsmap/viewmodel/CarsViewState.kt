@@ -1,5 +1,6 @@
 package com.cars.carsmap.viewmodel
 
+import android.view.View
 import com.cars.carsmap.model.entity.Car
 
 /**
@@ -19,5 +20,20 @@ data class CarsViewState(
     val status: ViewStateStatus,
     val list: List<Car> = emptyList(),
     val carSelected: Car? = null,
-    val carSelectedMap:Car? = null,
-    val message:String? = null)
+    val carSelectedMap: Car? = null,
+    val message: String? = null
+) {
+
+    val isLoading: Boolean
+        get() {
+            return status == ViewStateStatus.PROGRESS
+        }
+
+    val emptyVisibility:Int
+        get() {
+            return if(!isLoading && list.isEmpty())
+                View.VISIBLE
+            else
+                View.INVISIBLE
+        }
+}

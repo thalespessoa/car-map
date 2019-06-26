@@ -12,13 +12,31 @@
                     android:layout_height="match_parent"
                     android:background="@color/colorBaseDark">
 
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                android:id="@+id/swipe_refresh_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:refreshing="@{viewModel.viewState.isLoading}">
+
+            <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:clipToPadding="false"
+                    app:data="@{viewModel.viewState.list}"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
         <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/empty_image"
                 android:layout_centerInParent="true"
                 android:gravity="center"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="@{viewModel.viewState.emptyVisibility}">
 
             <TextView android:layout_width="wrap_content"
                       android:layout_height="wrap_content"
@@ -33,22 +51,6 @@
                     android:text="@string/retry"
                     style="@style/Button"/>
         </LinearLayout>
-
-        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-                android:id="@+id/swipe_refresh_layout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-            <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recycler_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:paddingTop="5dp"
-                    android:paddingBottom="5dp"
-                    android:clipToPadding="false"
-                    app:data="@{viewModel.viewState.list}"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
-        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     </RelativeLayout>
 </layout>

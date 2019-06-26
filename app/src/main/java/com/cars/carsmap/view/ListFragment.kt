@@ -8,7 +8,6 @@ import android.widget.Button
 import androidx.annotation.VisibleForTesting
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -18,7 +17,6 @@ import com.cars.carsmap.ViewModelFactory
 import com.cars.carsmap.view.adapter.CarsListAdapter
 import com.cars.carsmap.viewmodel.CarsViewModel
 import com.cars.carsmap.viewmodel.CarsViewState
-import com.cars.carsmap.viewmodel.ViewStateStatus
 import kotlinx.android.synthetic.main.fragment_list.*
 
 /**
@@ -66,18 +64,5 @@ class ListFragment : Fragment() {
         carsAdapter.onCarSelected = { carsViewModel.select(it) }
         carsAdapter.onCarPlaceSelected = { carsViewModel.selectOnMap(it) }
         retryButton.setOnClickListener { carsViewModel.refresh() }
-
-        carsViewModel.viewState.observe(this, Observer {
-            val isProgress = it?.status == ViewStateStatus.PROGRESS
-            val listIsEmpty = it?.list?.isEmpty() == true
-            swipeRefreshLayout.isRefreshing = isProgress
-            if(listIsEmpty && !isProgress) {
-                emptyImage.visibility = View.VISIBLE
-                swipeRefreshLayout.visibility = View.INVISIBLE
-            } else {
-                emptyImage.visibility = View.INVISIBLE
-                swipeRefreshLayout.visibility = View.VISIBLE
-            }
-        })
     }
 }

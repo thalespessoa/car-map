@@ -1,75 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:id="@+id/view_detail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:minWidth="300dp"
-                android:background="@drawable/base_square_selector"
-                android:clipToPadding="false"
-                android:orientation="vertical"
-                android:padding="10dp">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
 
-    <ScrollView android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/info_scroll">
+    <data class=".DetailBinding">
+        <variable
+                name="viewModel"
+                type="com.cars.carsmap.viewmodel.CarsViewModel"/>
+    </data>
 
-        <LinearLayout android:layout_width="match_parent"
-                      android:layout_height="wrap_content"
-                      android:orientation="vertical">
-
-            <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/image"
+    <RelativeLayout android:id="@+id/view_detail"
                     android:layout_width="match_parent"
-                    android:layout_height="150dp"
-                    android:layout_gravity="right"/>
+                    android:layout_height="wrap_content"
+                    android:minWidth="300dp"
+                    android:background="@drawable/base_square_selector"
+                    android:clipToPadding="false"
+                    android:orientation="vertical"
+                    android:padding="10dp">
 
-            <TextView android:id="@+id/title"
-                      style="@style/TextHeader"
-                      android:layout_width="wrap_content"
-                      android:layout_height="wrap_content"
-                      android:layout_marginBottom="10dp"
-                      tools:text="Title"/>
+        <ScrollView android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/info_scroll">
 
-            <TextView android:id="@+id/color"
-                      style="@style/ListTitleDark"
-                      android:layout_width="wrap_content"
-                      android:layout_height="wrap_content"
-                      tools:text="Title"/>
+            <LinearLayout android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:orientation="vertical">
 
-            <TextView android:id="@+id/group"
-                      style="@style/ListTitleDark"
-                      android:layout_width="wrap_content"
-                      android:layout_height="wrap_content"
-                      tools:text="Title"/>
+                <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/image"
+                        android:layout_width="match_parent"
+                        android:layout_height="150dp"
+                        app:imageUrl="@{viewModel.viewState.carSelected.carImageUrl}"/>
 
-            <TextView android:id="@+id/name"
-                      style="@style/ListTitleDark"
-                      android:layout_width="wrap_content"
-                      android:layout_height="wrap_content"
-                      tools:text="Title"/>
+                <TextView android:id="@+id/title"
+                          style="@style/TextHeader"
+                          android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"
+                          android:layout_marginBottom="10dp"
+                          android:text="@{viewModel.viewState.carSelected.modelName}"
+                          tools:text="Title"/>
 
-            <TextView android:id="@+id/serie"
-                      style="@style/ListTitleDark"
-                      android:layout_width="wrap_content"
-                      android:layout_height="wrap_content"
-                      tools:text="Title"/>
+                <TextView android:id="@+id/color"
+                          style="@style/ListTitleDark"
+                          android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"
+                          android:text="@{viewModel.viewState.carSelected.readableColor}"
+                          tools:text="Title"/>
 
-            <TextView android:layout_width="match_parent"
-                      android:layout_height="wrap_content"
-                      android:id="@+id/locationButton"
-                      android:drawableStart="@drawable/baseline_place_white_24px"
-                      style="@style/ButtonDark"
-                      android:layout_marginTop="15dp"
-                      android:text="@string/bt_map_location"/>
-        </LinearLayout>
-    </ScrollView>
-    <ImageButton
-            android:id="@+id/closeButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/baseline_close_24px"
-            android:background="@drawable/base_square_selector"
-            android:padding="5dp"
-            android:layout_alignParentEnd="true"/>
-</RelativeLayout>
+                <TextView android:id="@+id/group"
+                          style="@style/ListTitleDark"
+                          android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"
+                          android:text="@{viewModel.viewState.carSelected.group}"
+                          tools:text="Title"/>
+
+                <TextView android:id="@+id/name"
+                          style="@style/ListTitleDark"
+                          android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"
+                          android:text="@{viewModel.viewState.carSelected.name}"
+                          tools:text="Title"/>
+
+                <TextView android:id="@+id/serie"
+                          style="@style/ListTitleDark"
+                          android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"
+                          android:text="@{viewModel.viewState.carSelected.series}"
+                          tools:text="Title"/>
+
+                <TextView android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:id="@+id/locationButton"
+                          android:drawableStart="@drawable/baseline_place_white_24px"
+                          style="@style/ButtonDark"
+                          android:layout_marginTop="15dp"
+                          android:text="@string/bt_map_location"/>
+            </LinearLayout>
+        </ScrollView>
+        <ImageButton
+                android:id="@+id/closeButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/baseline_close_24px"
+                android:background="@drawable/base_square_selector"
+                android:padding="5dp"
+                android:layout_alignParentEnd="true"/>
+    </RelativeLayout>
+</layout>
