@@ -31,7 +31,6 @@ class ListFragment : Fragment() {
 
     private val recyclerView: RecyclerView by lazy { recycler_view }
     private val swipeRefreshLayout: SwipeRefreshLayout by lazy { swipe_refresh_layout }
-    private val emptyImage by lazy { empty_image }
     private val retryButton:Button by lazy { retry_button }
     private val carsAdapter = CarsListAdapter()
 
