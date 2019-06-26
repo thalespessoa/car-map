@@ -115,8 +115,10 @@ class MapFragment : SupportMapFragment(),
             if (ActivityCompat.checkSelfPermission(it, ACCESS_FINE_LOCATION) == PERMISSION_GRANTED) {
                 map?.isMyLocationEnabled = true
                 fusedLocationClient.lastLocation.addOnSuccessListener(it) { location ->
-                    this.currentLatLng = LatLng(location.latitude, location.longitude)
-                    map?.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 12f))
+                    location?.let{
+                        this.currentLatLng = LatLng(it.latitude, it.longitude)
+                        map?.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 12f))
+                    }
                 }
             }
         }
